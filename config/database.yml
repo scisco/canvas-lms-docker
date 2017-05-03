@@ -1,0 +1,31 @@
+# do not create a queue: section for your test environment
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: canvas_test
+  host: localhost
+  username: canvas
+  timeout: 5000
+
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: canvas_development
+  timeout: 5000
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: <%= ENV['DATABASE_NAME'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  timeout: 5000
+  queue:
+    adapter: postgresql
+    encoding: utf8
+    database: <%= ENV['DATABASE_NAME_QUEUE'] %>
+    host: <%= ENV['DATABASE_HOST'] %>
+    username: <%= ENV['DATABASE_USERNAME'] %>
+    password: <%= ENV['DATABASE_PASSWORD'] %>
+    timeout: 5000

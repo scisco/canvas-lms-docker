@@ -1,0 +1,35 @@
+web: &WEB
+  image: scisco/canvas-lms-docker:stable_2016-10-08
+  # build: .
+  entrypoint: ./start.sh
+  env_file:
+    - './.env'
+  ports:
+    - '8000:80'
+  volumes:
+    - './start.sh:/var/canvas/start.sh'
+    - './config/database.yml:/var/canvas/config/database.yml'
+    - './config/domain.yml:/var/canvas/config/domain.yml'
+    - './config/security.yml:/var/canvas/config/security.yml'
+    - './config/canvas.conf:/etc/apache2/sites-enabled/canvas.conf'
+
+web_nossl:
+  <<: *WEB
+  volumes:
+    - './start.sh:/var/canvas/start.sh'
+    - './config/database.yml:/var/canvas/config/database.yml'
+    - './config/domain.yml:/var/canvas/config/domain.yml'
+    - './config/security.yml:/var/canvas/config/security.yml'
+    - './config/canvas_no_ssl.conf:/etc/apache2/sites-enabled/canvas.conf'
+
+db_initial:
+  <<: *WEB
+  entrypoint: bundle exec rake db:initial_setup
+
+reset_encryption_key:
+  <<: *WEB
+  entrypoint: bundle exec rake db:reset_encryption_key_hash
+
+bash:
+  <<: *WEB
+  entrypoint: /bin/bash
