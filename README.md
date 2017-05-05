@@ -1,3 +1,14 @@
+# Docker Image for Canvas LMS
+
+This docker image of Canvas LMS builds the application in one single container. It still relies on external services for database and caching.
+
+You can run multiple instances of this container for web and bg worker tasks.
+
+Get the build image from [here](https://hub.docker.com/r/scisco/canvas-lms-docker/).
+
+## Build
+
+    $ docker build . -t 'scisco/canvas-lms-docker:some_tag'
 
 ## Install
 
@@ -27,14 +38,14 @@ Update `.env` with correct information
 
 ## Docker RUN
 
-    $ docker run -it --env-file ./.env -p 8000:80 -v ${PWD}/start.sh:/var/canvas/start.sh -v ${PWD}/config/database.yml:/var/canvas/config/database.yml -v ${PWD}/config/domain.yml:/var/canvas/config/domain.yml -v ${PWD}/config/security.yml:/var/canvas/config/security.yml -v ${PWD}/config/canvas_no_ssl.conf:/etc/apache2/sites-enabled/canvas.conf  scisco/canvas-lms-docker:stable_2016-10-29.14 ./start.sh
+    $ docker run -it --env-file ./.env -p 8000:80 -v ${PWD}/start.sh:/var/canvas/start.sh -v ${PWD}/config/database.yml:/var/canvas/config/database.yml -v ${PWD}/config/domain.yml:/var/canvas/config/domain.yml -v ${PWD}/config/security.yml:/var/canvas/config/security.yml -v ${PWD}/config/canvas_no_ssl.conf:/etc/apache2/sites-enabled/canvas.conf scisco/canvas-lms-docker:release_2017-04-22.20 ./start.sh
 
-    $ docker run -it --env-file ./.env -v ${PWD}/start.sh:/var/canvas/start.sh -v ${PWD}/config/database.yml:/var/canvas/config/database.yml -v ${PWD}/config/domain.yml:/var/canvas/config/domain.yml -v ${PWD}/config/security.yml:/var/canvas/config/security.yml -v ${PWD}/config/canvas_no_ssl.conf:/etc/apache2/sites-enabled/canvas.conf  scisco/canvas-lms-docker:stable_2016-10-29.14 ./script/canvas_init run
+    $ docker run -it --env-file ./.env -v ${PWD}/start.sh:/var/canvas/start.sh -v ${PWD}/config/database.yml:/var/canvas/config/database.yml -v ${PWD}/config/domain.yml:/var/canvas/config/domain.yml -v ${PWD}/config/security.yml:/var/canvas/config/security.yml -v ${PWD}/config/canvas_no_ssl.conf:/etc/apache2/sites-enabled/canvas.conf  scisco/canvas-lms-docker:release_2017-04-22.20 ./script/canvas_init run
 
-    $ docker run --rm -it -v ${PWD}/confg:/var/canvas/config -v scisco/canvas-lms-docker:stable_2016-10-29.14 rake db:reset_encryption_key_hash
+    $ docker run --rm -it -v ${PWD}/confg:/var/canvas/config -v scisco/canvas-lms-docker:release_2017-04-22.20 rake db:reset_encryption_key_hash
 
-    $ docker run --rm -it -v /tmp/efs/project/config/database.yml:/var/canvas/config/database.yml -v /tmp/efs/project/config/security.yml:/var/canvas/config/security.yml -v /tmp/efs/sad/brandable_css:/var/canvas/public/dist/brandable_css -v /tmp/efs/project/sites-enabled:/etc/apache2/sites-enabled -p 80:80 -p 443:443 scisco/canvas-lms-docker:stable_2016-10-29.14 ./start.sh
+    $ docker run --rm -it -v /tmp/efs/project/config/database.yml:/var/canvas/config/database.yml -v /tmp/efs/project/config/security.yml:/var/canvas/config/security.yml -v /tmp/efs/sad/brandable_css:/var/canvas/public/dist/brandable_css -v /tmp/efs/project/sites-enabled:/etc/apache2/sites-enabled -p 80:80 -p 443:443 scisco/canvas-lms-docker:release_2017-04-22.20 ./start.sh
 
-### Upload style to S3
+### Right-to-Left Version of Canvas
 
-    $ aws s3 cp rtl.css s3://project-canvas/farsi/rtl.css --acl "public-read" --profile myprofile --region us-east-1
+I have included a RTL css override for Canvas here. It does't work with the latest version of Canvas but can be fixed with minimal efforts.
